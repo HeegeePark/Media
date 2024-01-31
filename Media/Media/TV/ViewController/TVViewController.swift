@@ -75,7 +75,6 @@ extension TVViewController: CodeBase {
     }
     
     func configureView() {
-        view.backgroundColor = .white
     }
     
     func configureTableView() {

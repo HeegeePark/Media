@@ -26,8 +26,12 @@ class TVCollectionViewCell: UICollectionViewCell {
     
     func bindResult(result: TVResult) {
         guard let imagePath = result.poster_path else { return }
-        let url = URL(string: "https://image.tmdb.org/t/p/w500\(imagePath)")
-        imageView.kf.setImage(with: url)
+        imageView.setPoster(path: imagePath)
+    }
+    
+    func bindPoster(path: String?) {
+        guard let path else { return }
+        imageView.setPoster(path: path)
     }
 }
 
@@ -45,6 +49,7 @@ extension TVCollectionViewCell: CodeBase {
     
     func configureView() {
         imageView.image = UIImage(systemName: "xmark")
+        imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
     }
 }

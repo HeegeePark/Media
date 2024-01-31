@@ -48,7 +48,20 @@ extension TVTableViewCell: CodeBase {
         titleLabel.font = .boldSystemFont(ofSize: 15)
     }
     
+    // TODO: 제네릭으로 함수 줄여보기
     func configureCollectionView(target: TVViewController, tag: Int, title: String) {
+        collectionView.delegate = target
+        collectionView.dataSource = target
+        collectionView.tag = tag
+        collectionView.register(TVCollectionViewCell.self, forCellWithReuseIdentifier: TVCollectionViewCell.identifier)
+        
+        titleLabel.text = title
+        
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.reloadData()
+    }
+    
+    func configureCollectionView(target: TVSeriesViewController, tag: Int, title: String) {
         collectionView.delegate = target
         collectionView.dataSource = target
         collectionView.tag = tag

@@ -20,6 +20,7 @@ struct TVSeriesDetailsModel: Decodable {
     let posterPath: String
     let backdropPath: String
     let tagline: String
+    let seasons: [Season]
 
     enum CodingKeys: String, CodingKey {
         case backdropPath = "backdrop_path"
@@ -33,6 +34,7 @@ struct TVSeriesDetailsModel: Decodable {
         case overview
         case posterPath = "poster_path"
         case tagline
+        case seasons
     }
 }
 
