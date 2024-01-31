@@ -23,7 +23,22 @@ class TVAPI {
                 
                 completionHandler(success.results)
             case .failure(let failure):
-                print("fail: ", failure)
+                print(#function, "fail: ", failure)
+            }
+        }
+    }
+    
+    func getTVSeries<T: Decodable>(router: APIRouter, model: T.Type, _ completionHandler: @escaping (T) -> Void) {
+        let url = router.requestURL
+        
+        AF.request(url, headers: router.headers).responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let success):
+                dump(success)
+                
+                completionHandler(success)
+            case .failure(let failure):
+                print(#function, "fail: ", failure)
             }
         }
     }

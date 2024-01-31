@@ -14,6 +14,9 @@ enum APIRouter {
     case trending(time_window: TimeWindow)
     case topRated
     case popular
+    case tvSeriesDetail
+    case tvSeriesRecommendations
+    case tvSeriesAggregateCredits
     
     private var path: String {
         switch self {
@@ -23,6 +26,12 @@ enum APIRouter {
             return "tv/top_rated"
         case .popular:
             return "tv/popular"
+        case .tvSeriesDetail:
+            return "tv/1418"
+        case .tvSeriesRecommendations:
+            return Self.tvSeriesDetail.path + "/recommendations"
+        case .tvSeriesAggregateCredits:
+            return Self.tvSeriesDetail.path + "/aggregate_credits"
         }
     }
     
