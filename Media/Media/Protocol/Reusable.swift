@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol Reusable: AnyObject {
+protocol Reusable: NSObject {
     static var identifier: String { get }
 }
 
 extension Reusable {
     static var identifier: String {
-        return NSObject.description()
+        return description()
     }
 }
 
