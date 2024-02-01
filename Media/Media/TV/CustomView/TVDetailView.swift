@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TVDetailView: UIView {
+class TVDetailView: UITableViewHeaderFooterView {
     
     let posterImageView = UIImageView()
     let titleLabel = UILabel()
@@ -15,14 +15,14 @@ class TVDetailView: UIView {
     let creatorLabel = UILabel()
     let overviewLabel = UILabel()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         
         configureHierarchy()
         configureLayout()
         configureView()
     }
-    
+      
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -46,33 +46,40 @@ extension TVDetailView {
     }
     
     func configureLayout() {
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         posterImageView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
+            make.top.horizontalEdges.equalTo(contentView)
             make.height.equalTo(200)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(posterImageView.snp.bottom).offset(8)
-            make.horizontalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalTo(contentView).inset(8)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.horizontalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalTo(contentView).inset(8)
         }
         
         creatorLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
-            make.horizontalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalTo(contentView).inset(8)
         }
         
         overviewLabel.snp.makeConstraints { make in
             make.top.equalTo(creatorLabel.snp.bottom).offset(4)
-            make.horizontalEdges.bottom.equalToSuperview().inset(8)
+            make.horizontalEdges.bottom.equalTo(contentView).inset(8)
         }
     }
     
     func configureView() {
+        contentView.backgroundColor = .clear
+        
         posterImageView.contentMode = .scaleAspectFill
         
         titleLabel.font = .boldSystemFont(ofSize: 20)

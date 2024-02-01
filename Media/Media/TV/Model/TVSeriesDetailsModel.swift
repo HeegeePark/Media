@@ -51,7 +51,7 @@ struct Season: Decodable {
     let id: Int
     let episodeCount: Int
     let name, overview: String
-    let posterPath: String
+    let posterPath: String?
     let seasonNumber: Int
 
     enum CodingKeys: String, CodingKey {

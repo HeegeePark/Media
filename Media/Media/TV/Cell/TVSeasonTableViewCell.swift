@@ -1,16 +1,16 @@
 //
-//  TVTableViewCell.swift
+//  TVSeasonTableViewCEll.swift
 //  Media
 //
-//  Created by 박희지 on 1/30/24.
+//  Created by 박희지 on 2/1/24.
 //
 
 import UIKit
 
-class TVTableViewCell: UITableViewCell {
-    
+// TV시리즈 시즌 정보 전용 테이블뷰 셀
+class TVSeasonTableViewCell: UITableViewCell {
     let titleLabel = UILabel()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,7 +25,7 @@ class TVTableViewCell: UITableViewCell {
     }
 }
 
-extension TVTableViewCell: CodeBase {
+extension TVSeasonTableViewCell: CodeBase {
     func configureHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
@@ -40,7 +40,6 @@ extension TVTableViewCell: CodeBase {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.horizontalEdges.bottom.equalTo(contentView)
-            make.height.equalTo(160)
         }
     }
     
@@ -48,39 +47,36 @@ extension TVTableViewCell: CodeBase {
         titleLabel.font = .boldSystemFont(ofSize: 17)
     }
     
-    // TODO: 제네릭으로 함수 줄여보기
-    func configureCollectionView(target: TVViewController, tag: Int, title: String) {
-        collectionView.delegate = target
-        collectionView.dataSource = target
-        collectionView.tag = tag
-        collectionView.register(TVCollectionViewCell.self, forCellWithReuseIdentifier: TVCollectionViewCell.identifier)
-        
-        titleLabel.text = title
-        
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.reloadData()
-    }
-    
     func configureCollectionView(target: TVSeriesViewController, tag: Int, title: String) {
         collectionView.delegate = target
         collectionView.dataSource = target
         collectionView.tag = tag
-        collectionView.register(TVCollectionViewCell.self, forCellWithReuseIdentifier: TVCollectionViewCell.identifier)
+        collectionView.register(TVSeasonCollectionViewCell.self, forCellWithReuseIdentifier: TVSeasonCollectionViewCell.identifier)
         
         titleLabel.text = title
         
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isScrollEnabled = false
         collectionView.reloadData()
     }
     
     static func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
-        
-        layout.itemSize = CGSize(width: 120, height: 160)
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 0
-        layout.scrollDirection = .horizontal
         
         return layout
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        
+        collectionView.frame = CGRect(x: collectionView.frame.origin.x, y: frame.origin.y, width: collectionView.frame.width, height: 1400)
+        
+        collectionView.layoutIfNeeded()
+        
+        let newCellSize = CGSize(width: collectionView.collectionViewLayout.collectionViewContentSize.width, height: collectionView.collectionViewLayout.collectionViewContentSize.height + 36)
+        
+        return newCellSize
     }
 }
