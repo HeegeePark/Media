@@ -14,9 +14,8 @@ class TVAPI {
     private init() { }
     
     func getTV(router: APIRouter, _ completionHandler: @escaping ([TVResult]) -> Void) {
-        let url = router.requestURL
         
-        AF.request(url, headers: router.headers).responseDecodable(of: TVModel.self) { response in
+        AF.request(router.endpoint, parameters: router.parameters, encoding: URLEncoding(destination: .queryString), headers: router.headers).responseDecodable(of: TVModel.self) { response in
             switch response.result {
             case .success(let success):
 //                dump(success)
@@ -29,9 +28,7 @@ class TVAPI {
     }
     
     func getTVSeries<T: Decodable>(router: APIRouter, model: T.Type, _ completionHandler: @escaping (T) -> Void) {
-        let url = router.requestURL
-        
-        AF.request(url, headers: router.headers).responseDecodable(of: T.self) { response in
+        AF.request(router.endpoint, parameters: router.parameters, encoding: URLEncoding(destination: .queryString), headers: router.headers).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let success):
 //                dump(success)

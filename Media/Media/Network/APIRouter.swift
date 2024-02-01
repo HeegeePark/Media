@@ -39,12 +39,12 @@ enum APIRouter {
         return ["Authorization": APIKey.tmdb]
     }
     
-    private var query: String {
-        return "?language=ko-KR"
+    var parameters: Parameters {
+        return ["language": "ko-KR"]
     }
     
-    var requestURL: String {
-        return APIRouter.BaseURL + path + query
+    var endpoint: String {
+        return APIRouter.BaseURL + path
     }
 }
 
