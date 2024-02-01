@@ -34,7 +34,7 @@ class TVAPI {
         AF.request(url, headers: router.headers).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let success):
-                dump(success)
+//                dump(success)
                 
                 completionHandler(success)
             case .failure(let failure):

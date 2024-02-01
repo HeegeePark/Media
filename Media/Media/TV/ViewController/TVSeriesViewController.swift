@@ -29,6 +29,7 @@ class TVSeriesViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
+        configureTableView()
         
         fetchTVSeries()
     }
@@ -50,6 +51,7 @@ class TVSeriesViewController: UIViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.getTVSeries(router: .tvSeriesRecommendations, model: TVSeriesRecommendationsModel.self) { result in
+                self.reocmmendataions = result.results
                 group.leave()
             }
         }
@@ -57,6 +59,7 @@ class TVSeriesViewController: UIViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.getTVSeries(router: .tvSeriesAggregateCredits, model: TVSeriesAggregateCreditsModel.self) { result in
+                self.casts = Array(result.cast[0..<10])
                 group.leave()
             }
         }
