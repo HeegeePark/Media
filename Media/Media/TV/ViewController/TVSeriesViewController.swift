@@ -59,7 +59,7 @@ class TVSeriesViewController: UIViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.getTVSeries(router: .tvSeriesAggregateCredits, model: TVSeriesAggregateCreditsModel.self) { result in
-                self.casts = Array(result.cast[0..<10])
+                self.casts = result.cast
                 group.leave()
             }
         }
@@ -153,7 +153,9 @@ extension TVSeriesViewController: UICollectionViewDelegate, UICollectionViewData
             result = reocmmendataions[indexPath.item].posterPath
         }
         
-        cell.bindPoster(path: result)
+        if let result {
+            cell.bindPoster(path: result)
+        }
         
         return cell
     }

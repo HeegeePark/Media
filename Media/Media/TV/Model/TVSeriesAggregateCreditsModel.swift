@@ -23,7 +23,7 @@ struct Cast: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case profilePath
+        case profilePath = "profile_path"
         case roles
         case order
     }
