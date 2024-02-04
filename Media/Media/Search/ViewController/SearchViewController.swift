@@ -65,6 +65,15 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let result = list[indexPath.item]
+        
+        let vc = TVSeriesViewController()
+        vc.bindTVSeries(id: result.id)
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 #Preview {

@@ -18,6 +18,8 @@ class TVSeriesViewController: BaseViewController {
         case recommendations = "비슷한 추천 작품"
     }
     
+    var id = 0
+    
     var casts: [Cast] = []
     var seasons: [Season] = []
     var reocmmendataions: [TVSeriesResult] = []
@@ -28,9 +30,15 @@ class TVSeriesViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureNavigationBar()
         configureTableView()
         
         fetchTVSeries()
+    }
+    
+    func bindTVSeries(id: Int) {
+        self.id = id
     }
     
     func fetchTVSeries() {
@@ -38,7 +46,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.request(router: .tvSeriesDetail, model: TVSeriesDetailsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesDetail(id: self.id), model: TVSeriesDetailsModel.self) { result in
                 let info = DetailInfo(name: result.name, firstAirYear: result.firstAirDate, numberOfSeasons: result.numberOfSeasons, numberOfEpisodes: result.numberOfEpisodes, createdByName: result.createdBy.map { $0.name }, backdropPath: result.backdropPath, overview: result.overview)
                 
                 self.mainView.headerView.bindInfo(info)
@@ -49,7 +57,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.request(router: .tvSeriesRecommendations, model: TVSeriesRecommendationsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesRecommendations(id: self.id), model: TVSeriesRecommendationsModel.self) { result in
                 self.reocmmendataions = result.results
                 group.leave()
             }
@@ -57,7 +65,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.request(router: .tvSeriesAggregateCredits, model: TVSeriesAggregateCreditsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesAggregateCredits(id: self.id), model: TVSeriesAggregateCreditsModel.self) { result in
                 self.casts = Array(result.cast[0..<10])
                 group.leave()
             }
@@ -168,8 +176,4 @@ struct DetailInfo {
     let createdByName: [String]
     let backdropPath: String
     let overview: String
-}
-
-#Preview {
-    TVSeriesViewController()
 }
