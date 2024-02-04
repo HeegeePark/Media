@@ -18,7 +18,7 @@ extension TabBarItem {
         case .tv:
             return "TV"
         case .tvSeries:
-            return "TV시리즈"
+            return "탐색"
         }
     }
 }
@@ -29,7 +29,7 @@ extension TabBarItem {
         case .tv:
             return UIImage(systemName: "play.tv")
         case .tvSeries:
-            return UIImage(systemName: "play.rectangle.on.rectangle")
+            return UIImage(systemName: "magnifyingglass")
         }
     }
     
@@ -38,7 +38,7 @@ extension TabBarItem {
         case .tv:
             return UIImage(systemName: "play.tv.fill")
         case .tvSeries:
-            return UIImage(systemName: "play.rectangle.on.rectangle.fill")
+            return UIImage(systemName: "magnifyingglass.fill")
         }
     }
 }

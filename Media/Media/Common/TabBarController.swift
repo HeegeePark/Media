@@ -11,7 +11,7 @@ final class TabBarController: UITabBarController {
     
     private lazy var tabs: [UIViewController] = [
         UINavigationController(rootViewController: TVViewController()),
-        UINavigationController(rootViewController: TVSeriesViewController())
+        UINavigationController(rootViewController: SearchViewController())
     ]
 
     

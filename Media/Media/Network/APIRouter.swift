@@ -17,6 +17,7 @@ enum APIRouter {
     case tvSeriesDetail
     case tvSeriesRecommendations
     case tvSeriesAggregateCredits
+    case tvSearch(query: String)
     
     private var path: String {
         switch self {
@@ -32,6 +33,8 @@ enum APIRouter {
             return Self.tvSeriesDetail.path + "/recommendations"
         case .tvSeriesAggregateCredits:
             return Self.tvSeriesDetail.path + "/aggregate_credits"
+        case .tvSearch:
+            return "search/tv"
         }
     }
     
@@ -44,7 +47,12 @@ enum APIRouter {
     }
     
     var parameters: Parameters {
-        return ["language": "ko-KR"]
+        switch self {
+        case .tvSearch(let query):
+            return ["query": query, "language": "ko-KR"]
+        default:
+            return ["language": "ko-KR"]
+        }
     }
     
     var urlEncoding: URLEncoding {
