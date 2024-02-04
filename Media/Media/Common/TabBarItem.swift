@@ -13,7 +13,7 @@ enum TabBarItem: Int, CaseIterable {
 }
 
 extension TabBarItem {
-    var title: String {
+    private var title: String {
         switch self {
         case .tv:
             return "TV"
@@ -24,7 +24,7 @@ extension TabBarItem {
 }
 
 extension TabBarItem {
-    var inactiveIcon: UIImage? {
+    private var inactiveIcon: UIImage? {
         switch self {
         case .tv:
             return UIImage(systemName: "play.tv")
@@ -33,7 +33,7 @@ extension TabBarItem {
         }
     }
     
-    var activeIcon: UIImage? {
+    private var activeIcon: UIImage? {
         switch self {
         case .tv:
             return UIImage(systemName: "play.tv.fill")

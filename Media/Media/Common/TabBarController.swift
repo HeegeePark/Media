@@ -38,7 +38,6 @@ extension TabBarController {
         UITabBar.appearance().backgroundColor = .black
         UITabBar.appearance().tintColor = .white
         UITabBar.appearance().unselectedItemTintColor = .lightGray
-        UITabBar.appearance().isTranslucent = false
     }
     
     private func setTabBarItems() {
