@@ -35,12 +35,20 @@ enum APIRouter {
         }
     }
     
+    var method: HTTPMethod {
+        return .get
+    }
+    
     var headers: HTTPHeaders {
         return ["Authorization": APIKey.tmdb]
     }
     
     var parameters: Parameters {
         return ["language": "ko-KR"]
+    }
+    
+    var urlEncoding: URLEncoding {
+        return URLEncoding(destination: .queryString)
     }
     
     var endpoint: String {

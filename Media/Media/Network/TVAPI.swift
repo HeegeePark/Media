@@ -13,22 +13,8 @@ class TVAPI {
     
     private init() { }
     
-    func getTV(router: APIRouter, _ completionHandler: @escaping ([TVResult]) -> Void) {
-        
-        AF.request(router.endpoint, parameters: router.parameters, encoding: URLEncoding(destination: .queryString), headers: router.headers).responseDecodable(of: TVModel.self) { response in
-            switch response.result {
-            case .success(let success):
-//                dump(success)
-                
-                completionHandler(success.results)
-            case .failure(let failure):
-                print(#function, "fail: ", failure)
-            }
-        }
-    }
-    
-    func getTVSeries<T: Decodable>(router: APIRouter, model: T.Type, _ completionHandler: @escaping (T) -> Void) {
-        AF.request(router.endpoint, parameters: router.parameters, encoding: URLEncoding(destination: .queryString), headers: router.headers).responseDecodable(of: T.self) { response in
+    func request<T: Decodable>(router: APIRouter, model: T.Type, _ completionHandler: @escaping (T) -> Void) {
+        AF.request(router.endpoint, method: router.method, parameters: router.parameters, encoding: router.urlEncoding, headers: router.headers).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let success):
 //                dump(success)

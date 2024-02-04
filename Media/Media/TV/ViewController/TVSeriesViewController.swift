@@ -38,7 +38,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.getTVSeries(router: .tvSeriesDetail, model: TVSeriesDetailsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesDetail, model: TVSeriesDetailsModel.self) { result in
                 let info = DetailInfo(name: result.name, firstAirYear: result.firstAirDate, numberOfSeasons: result.numberOfSeasons, numberOfEpisodes: result.numberOfEpisodes, createdByName: result.createdBy.map { $0.name }, backdropPath: result.backdropPath, overview: result.overview)
                 
                 self.mainView.headerView.bindInfo(info)
@@ -49,7 +49,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.getTVSeries(router: .tvSeriesRecommendations, model: TVSeriesRecommendationsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesRecommendations, model: TVSeriesRecommendationsModel.self) { result in
                 self.reocmmendataions = result.results
                 group.leave()
             }
@@ -57,7 +57,7 @@ class TVSeriesViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            TVAPI.shared.getTVSeries(router: .tvSeriesAggregateCredits, model: TVSeriesAggregateCreditsModel.self) { result in
+            TVAPI.shared.request(router: .tvSeriesAggregateCredits, model: TVSeriesAggregateCreditsModel.self) { result in
                 self.casts = Array(result.cast[0..<10])
                 group.leave()
             }
