@@ -10,8 +10,7 @@ import SnapKit
 
 class TVSeriesViewController: BaseViewController {
     
-    let headerView: TVDetailView = TVDetailView(reuseIdentifier: TVDetailView.identifier)
-    let tableView = UITableView()
+    let mainView = TVSeriesView()
     
     enum Category: String, CaseIterable {
         case casts = "출연진"
@@ -22,6 +21,10 @@ class TVSeriesViewController: BaseViewController {
     var casts: [Cast] = []
     var seasons: [Season] = []
     var reocmmendataions: [TVSeriesResult] = []
+    
+    override func loadView() {
+        self.view = mainView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +41,7 @@ class TVSeriesViewController: BaseViewController {
             TVAPI.shared.getTVSeries(router: .tvSeriesDetail, model: TVSeriesDetailsModel.self) { result in
                 let info = DetailInfo(name: result.name, firstAirYear: result.firstAirDate, numberOfSeasons: result.numberOfSeasons, numberOfEpisodes: result.numberOfEpisodes, createdByName: result.createdBy.map { $0.name }, backdropPath: result.backdropPath, overview: result.overview)
                 
-                self.headerView.bindInfo(info)
+                self.mainView.headerView.bindInfo(info)
                 self.seasons = result.seasons
                 group.leave()
             }
@@ -61,7 +64,7 @@ class TVSeriesViewController: BaseViewController {
         }
         
         group.notify(queue: .main) {
-            self.tableView.reloadData()
+            self.mainView.tableView.reloadData()
         }
     }
     
@@ -76,33 +79,9 @@ class TVSeriesViewController: BaseViewController {
         }
     }
     
-    override func configureHierarchy() {
-        view.addSubview(tableView)
-    }
-    
-    override func configureLayout() {
-        
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-    
-    override func configureView() {
-    }
-    
     func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(TVTableViewCell.self, forCellReuseIdentifier: TVTableViewCell.identifier)
-        tableView.register(TVSeasonTableViewCell.self, forCellReuseIdentifier: TVSeasonTableViewCell.identifier)
-        
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        
-        tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = 300
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = self
     }
 }
 
@@ -110,7 +89,7 @@ class TVSeriesViewController: BaseViewController {
 
 extension TVSeriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return headerView
+        return mainView.headerView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

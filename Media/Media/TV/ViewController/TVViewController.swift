@@ -27,19 +27,23 @@ class TVViewController: BaseViewController {
         }
     }
     
-    let tableView = UITableView()
+    let mainView = TVView()
     
     var list: [[TVResult]] = Array(repeating: [], count: Category.allCases.count) {
         didSet {
-            tableView.reloadData()
+            mainView.tableView.reloadData()
         }
+    }
+    
+    override func loadView() {
+        self.view = mainView
+        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureTableView()
-        
         fetchAllResult()
     }
     
@@ -56,25 +60,9 @@ class TVViewController: BaseViewController {
         }
     }
     
-    override func configureHierarchy() {
-        view.addSubview(tableView)
-    }
-    
-    override func configureLayout() {
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-    
-    override func configureView() {
-    }
-    
     func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(TVTableViewCell.self, forCellReuseIdentifier: TVTableViewCell.identifier)
-        tableView.separatorStyle = .none
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = self
     }
 }
 
