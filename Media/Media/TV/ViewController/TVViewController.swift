@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TVViewController: UIViewController {
+class TVViewController: BaseViewController {
     
     enum Category: String, CaseIterable {
         case trending = "요즘 트렌드는 이 시리즈!"
@@ -38,9 +38,6 @@ class TVViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureHierarchy()
-        configureLayout()
-        configureView()
         configureTableView()
         
         fetchAllResult()
@@ -58,23 +55,18 @@ class TVViewController: UIViewController {
             self.list[idx] = Array(results[0..<10])
         }
     }
-}
-
-// MARK: - Custom UI
-
-extension TVViewController: CodeBase {
     
-    func configureHierarchy() {
+    override func configureHierarchy() {
         view.addSubview(tableView)
     }
     
-    func configureLayout() {
+    override func configureLayout() {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
-    func configureView() {
+    override func configureView() {
     }
     
     func configureTableView() {

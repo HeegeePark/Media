@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TVSeriesViewController: UIViewController {
+class TVSeriesViewController: BaseViewController {
     
     let headerView: TVDetailView = TVDetailView(reuseIdentifier: TVDetailView.identifier)
     let tableView = UITableView()
@@ -25,10 +25,6 @@ class TVSeriesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        configureHierarchy()
-        configureLayout()
-        configureView()
         configureTableView()
         
         fetchTVSeries()
@@ -79,21 +75,19 @@ class TVSeriesViewController: UIViewController {
             return reocmmendataions.count
         }
     }
-}
-
-extension TVSeriesViewController {
-    func configureHierarchy() {
+    
+    override func configureHierarchy() {
         view.addSubview(tableView)
     }
     
-    func configureLayout() {
+    override func configureLayout() {
         
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
-    func configureView() {
+    override func configureView() {
     }
     
     func configureTableView() {
