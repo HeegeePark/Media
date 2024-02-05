@@ -55,6 +55,10 @@ enum APIRouter {
         }
     }
     
+    var queryItems: [URLQueryItem] {
+        return parameters.map { URLQueryItem(name: $0.key, value: $0.value as? String) }
+    }
+    
     var urlEncoding: URLEncoding {
         return URLEncoding(destination: .queryString)
     }

@@ -47,10 +47,18 @@ class TVSeriesViewController: BaseViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.request(router: .tvSeriesDetail(id: self.id), model: TVSeriesDetailsModel.self) { result in
-                let info = DetailInfo(name: result.name, firstAirYear: result.firstAirDate, numberOfSeasons: result.numberOfSeasons, numberOfEpisodes: result.numberOfEpisodes, createdByName: result.createdBy.map { $0.name }, backdropPath: result.backdropPath, overview: result.overview)
+                switch result {
+                case .success(let success):
+                    
+                    let info = DetailInfo(name: success.name, firstAirYear: success.firstAirDate, numberOfSeasons: success.numberOfSeasons, numberOfEpisodes: success.numberOfEpisodes, createdByName: success.createdBy.map { $0.name }, backdropPath: success.backdropPath, overview: success.overview)
+                    
+                    self.mainView.headerView.bindInfo(info)
+                    self.seasons = success.seasons
+                    
+                case .failure(let failure):
+                    self.presentErrorAlert(error: failure)
+                }
                 
-                self.mainView.headerView.bindInfo(info)
-                self.seasons = result.seasons
                 group.leave()
             }
         }
@@ -58,7 +66,14 @@ class TVSeriesViewController: BaseViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.request(router: .tvSeriesRecommendations(id: self.id), model: TVSeriesRecommendationsModel.self) { result in
-                self.reocmmendataions = result.results
+                
+                switch result {
+                case .success(let success):
+                    self.reocmmendataions = success.results
+                case .failure(let failure):
+                    self.presentErrorAlert(error: failure)
+                }
+                
                 group.leave()
             }
         }
@@ -66,7 +81,14 @@ class TVSeriesViewController: BaseViewController {
         group.enter()
         DispatchQueue.global().async {
             TVAPI.shared.request(router: .tvSeriesAggregateCredits(id: self.id), model: TVSeriesAggregateCreditsModel.self) { result in
-                self.casts = Array(result.cast[0..<10])
+                
+                switch result {
+                case .success(let success):
+                    self.casts = success.cast
+                case .failure(let failure):
+                    self.presentErrorAlert(error: failure)
+                }
+                
                 group.leave()
             }
         }

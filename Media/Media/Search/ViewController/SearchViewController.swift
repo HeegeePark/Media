@@ -41,8 +41,13 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.isEmpty else { return }
         
-        TVAPI.shared.request(router: .tvSearch(query: text), model: TVModel.self) { response in
-            self.list = response.results
+        TVAPI.shared.request(router: .tvSearch(query: text), model: TVModel.self) { result in
+            switch result {
+            case .success(let success):
+                self.list = success.results
+            case .failure(let failure):
+                self.presentErrorAlert(error: failure)
+            }
         }
     }
     

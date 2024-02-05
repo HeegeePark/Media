@@ -56,9 +56,14 @@ class TVViewController: BaseViewController {
     
     func fetchTVResult(router: APIRouter, idx: Int) {
         
-        TVAPI.shared.request(router: router, model: TVModel.self) { response in
-            let results = response.results
-            self.list[idx] = Array(results[0..<10])
+        TVAPI.shared.request(router: router, model: TVModel.self) { result in
+            switch result {
+            case .success(let success):
+                let results = success.results
+                self.list[idx] = Array(results[0..<10])
+            case .failure(let failure):
+                self.presentErrorAlert(error: failure)
+            }
         }
     }
     
