@@ -166,6 +166,19 @@ extension TVSeriesViewController: UICollectionViewDelegate, UICollectionViewData
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if Category.allCases[collectionView.tag] == .casts {
+            
+            let cast = casts[indexPath.item]
+            
+            let vc = ProfileViewController()
+            
+            vc.bindProfile(cast: cast)
+            
+            present(vc, animated: true)
+        }
+    }
 }
 
 struct DetailInfo {
