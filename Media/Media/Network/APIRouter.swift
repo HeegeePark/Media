@@ -18,6 +18,7 @@ enum APIRouter {
     case tvSeriesRecommendations(id: Int)
     case tvSeriesAggregateCredits(id: Int)
     case tvSearch(query: String)
+    case tvSeriesSeasonDetail(seriesId: Int, seasonNumber: Int)
     
     private var path: String {
         switch self {
@@ -35,6 +36,8 @@ enum APIRouter {
             return Self.tvSeriesDetail(id: id).path + "/aggregate_credits"
         case .tvSearch:
             return "search/tv"
+        case .tvSeriesSeasonDetail(seriesId: let seriesId, seasonNumber: let seasonNumber):
+            return "tv/\(seriesId)/season/\(seasonNumber)"
         }
     }
     
@@ -55,16 +58,30 @@ enum APIRouter {
         }
     }
     
-    var queryItems: [URLQueryItem] {
-        return parameters.map { URLQueryItem(name: $0.key, value: $0.value as? String) }
-    }
-    
     var urlEncoding: URLEncoding {
         return URLEncoding(destination: .queryString)
     }
     
     var endpoint: String {
         return APIRouter.BaseURL + path
+    }
+    
+    // MARK: - for URLSession
+    
+    var queryItems: [URLQueryItem] {
+        return parameters.map { URLQueryItem(name: $0.key, value: $0.value as? String) }
+    }
+    
+    var urlComponents: URLComponents {
+        var components = URLComponents(string: endpoint)!
+        components.queryItems = queryItems
+        return components
+    }
+    
+    var request: URLRequest {
+        var request = URLRequest(url: urlComponents.url!)
+        request.headers = headers
+        return request
     }
 }
 

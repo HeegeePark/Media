@@ -35,11 +35,8 @@ class TVAPI {
     }
     
     func request<T: Decodable>(router: APIRouter, model: T.Type, _ completionHandler: @escaping (Result<T, CustomError>) -> Void) {
-        var request = URLRequest(url: URL(string: router.endpoint)!)
-        request.headers = router.headers
-        request.url?.append(queryItems: router.queryItems)
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: router.request) { data, response, error in
             
             DispatchQueue.main.async {
                 guard error == nil else {
