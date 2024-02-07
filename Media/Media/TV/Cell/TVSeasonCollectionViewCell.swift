@@ -36,6 +36,18 @@ class TVSeasonCollectionViewCell: UICollectionViewCell {
         let overview = !result.overview.isEmpty ? result.overview: "정보 없음"
         overviewLabel.text = overview
     }
+    
+    func bindEpisode(result: Episode) {
+        
+        imageView.setPoster(path: result.stillPath)
+        
+        nameLabel.text = result.name
+        
+        descriptionLabel.text = "\(result.episodeNumber) 회차 • \(result.airDate.prefix(4))"
+        
+        let overview = !result.overview.isEmpty ? result.overview: "정보 없음"
+        overviewLabel.text = overview
+    }
 }
 
 extension TVSeasonCollectionViewCell: CodeBase {
@@ -59,7 +71,7 @@ extension TVSeasonCollectionViewCell: CodeBase {
         
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.top)
-            make.leading.equalTo(imageView.snp.trailing).offset(12)
+            make.leading.equalTo(imageView.snp.trailing).offset(12).priority(.high)
         }
         
         descriptionLabel.snp.makeConstraints { make in
@@ -69,7 +81,7 @@ extension TVSeasonCollectionViewCell: CodeBase {
         }
         
         overviewLabel.snp.makeConstraints { make in
-            make.leading.equalTo(imageView.snp.trailing).offset(12)
+            make.leading.equalTo(nameLabel)
             make.trailing.equalTo(contentView).inset(16)
             make.top.equalTo(nameLabel.snp.bottom).offset(4).priority(.high)
             make.bottom.equalTo(imageView.snp.bottom).priority(.medium)

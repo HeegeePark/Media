@@ -47,9 +47,9 @@ extension TVSeasonTableViewCell: CodeBase {
         titleLabel.font = .boldSystemFont(ofSize: 17)
     }
     
-    func configureCollectionView(target: TVSeriesViewController, tag: Int, title: String) {
-        collectionView.delegate = target
-        collectionView.dataSource = target
+    func configureCollectionView<T: BaseViewController>(target: T, tag: Int, title: String) {
+        collectionView.delegate = target.self as? UICollectionViewDelegate
+        collectionView.dataSource = target.self as? UICollectionViewDataSource
         collectionView.tag = tag
         collectionView.register(TVSeasonCollectionViewCell.self, forCellWithReuseIdentifier: TVSeasonCollectionViewCell.identifier)
         

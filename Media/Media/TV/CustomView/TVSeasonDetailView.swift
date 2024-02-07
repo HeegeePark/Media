@@ -1,18 +1,17 @@
 //
-//  TVDetailView.swift
+//  TVSeasonDetailView.swift
 //  Media
 //
-//  Created by 박희지 on 2/1/24.
+//  Created by 박희지 on 2/7/24.
 //
 
 import UIKit
 
-class TVDetailView: UITableViewHeaderFooterView {
+class TVSeasonDetailView: UITableViewHeaderFooterView {
     
     let posterImageView = UIImageView()
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
-    let creatorLabel = UILabel()
     let overviewLabel = UILabel()
     
     override init(reuseIdentifier: String?) {
@@ -33,50 +32,44 @@ class TVDetailView: UITableViewHeaderFooterView {
         titleLabel.text = info.name
         
         let firstAirYear = info.firstAirYear.prefix(4)
-        descriptionLabel.text = "\(info.numberOfSeasons) 시즌 • \(info.numberOfEpisodes) 회차 • \(firstAirYear)"
-        
-        if let creatorName = info.createdByName?.joined(separator: ", ") {
-            creatorLabel.text = "크리에이터 " + creatorName
-        }
+        descriptionLabel.text = "\(info.numberOfEpisodes) 회차 • \(firstAirYear)"
         
         overviewLabel.text = info.overview
     }
 }
 
-extension TVDetailView {
+extension TVSeasonDetailView {
     func configureHierarchy() {
-        self.addSubviews(posterImageView, titleLabel, descriptionLabel, creatorLabel, overviewLabel)
+        self.addSubviews(posterImageView, titleLabel, descriptionLabel, overviewLabel)
     }
     
     func configureLayout() {
         
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-        
-        posterImageView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(contentView)
             make.height.equalTo(200)
         }
         
+        posterImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.equalTo(contentView)
+            make.width.equalTo(UIScreen.main.bounds.width / 3)
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(posterImageView.snp.bottom).offset(8)
-            make.horizontalEdges.equalTo(contentView).inset(8)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
+            make.top.equalTo(contentView).inset(8)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.horizontalEdges.equalTo(contentView).inset(8)
-        }
-        
-        creatorLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
-            make.horizontalEdges.equalTo(contentView).inset(8)
+            make.leading.equalTo(titleLabel)
+            make.trailing.equalTo(contentView).inset(8)
         }
         
         overviewLabel.snp.makeConstraints { make in
-            make.top.equalTo(creatorLabel.snp.bottom).offset(4)
-            make.horizontalEdges.bottom.equalTo(contentView).inset(8)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(4)
+            make.leading.equalTo(titleLabel)
+            make.trailing.equalTo(contentView).inset(8)
         }
     }
     
@@ -90,11 +83,8 @@ extension TVDetailView {
         descriptionLabel.font = .systemFont(ofSize: 15)
         descriptionLabel.textColor = .lightText
         
-        creatorLabel.font = .systemFont(ofSize: 15)
-        creatorLabel.textColor = .lightText
-        
         overviewLabel.font = .systemFont(ofSize: 15)
         overviewLabel.textColor = .lightText
-        overviewLabel.numberOfLines = 3
+        overviewLabel.numberOfLines = 0
     }
 }

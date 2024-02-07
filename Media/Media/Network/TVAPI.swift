@@ -11,6 +11,7 @@ import Alamofire
 enum CustomError: Error {
     case failedRequest
     case noData
+    case invalidPath
     case invalidResponse
     case invalidData
     case failedDecoding

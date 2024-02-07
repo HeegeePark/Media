@@ -8,10 +8,12 @@
 import UIKit
 
 extension UIViewController {
-    func presentErrorAlert(error: CustomError) {
+    func presentErrorAlert(error: CustomError, _ action: (() -> Void)? = nil) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         
-        let button4 = UIAlertAction(title: "확인", style: .default)
+        let button4 = UIAlertAction(title: "확인", style: .default) { _ in
+            action?()
+        }
         
         alert.addAction(button4)
         

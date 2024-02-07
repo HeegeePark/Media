@@ -190,8 +190,10 @@ extension TVSeriesViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if Category.allCases[collectionView.tag] == .casts {
-            
+        
+        switch Category.allCases[collectionView.tag] {
+        
+        case .casts:
             let cast = casts[indexPath.item]
             
             let vc = ProfileViewController()
@@ -199,6 +201,19 @@ extension TVSeriesViewController: UICollectionViewDelegate, UICollectionViewData
             vc.bindProfile(cast: cast)
             
             present(vc, animated: true)
+            
+        case .seasons:
+            let season = seasons[indexPath.item]
+            
+            let vc = TVSeriesSeasonDetailViewController()
+            
+            vc.bindSeason(seriesId: id, seasonNumber: season.seasonNumber)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        
+        case .recommendations:
+            // TODO: 작품 세부정보 화면 연결
+            return
         }
     }
 }
@@ -208,7 +223,7 @@ struct DetailInfo {
     let firstAirYear: String
     let numberOfSeasons: Int
     let numberOfEpisodes: Int
-    let createdByName: [String]
+    let createdByName: [String]?
     let backdropPath: String
     let overview: String
 }
